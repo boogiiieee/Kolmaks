@@ -1,0 +1,21 @@
+{% extends "mail/mail.html" %}
+
+{% block top %}
+	<h2>Новый заказ на сайте {{ domain }}</h2>
+	<small>{{ item.date }}</small>
+{% endblock %}
+
+{% block content %}
+	<ul>
+		<li><strong>Организация:</strong> {{ item.org }}</li>
+		<li><strong>Контактное лицо:</strong> {{ item.name }}</li>
+		{% if item.phone %}
+			<li><strong>Телефон:</strong> {{ item.phone }}</li>
+		{% endif %}
+		<li><strong>E-mail:</strong> {{ item.email }}</li>
+		<li><strong>Характеристики выбранного товара:</strong> {{ item.msg|safe|linebreaksbr }}</li>
+	</ul>
+	<br/>
+	<a href="http://{{ domain }}/admin/order/orderitem/{{ item.id }}/">Посмотреть заказ на сайте</a>
+{% endblock %}
+

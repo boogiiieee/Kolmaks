@@ -1,0 +1,78 @@
+{% extends "default.html" %}
+
+{% load front_admin_tags %}
+
+{% block content %}
+
+	{% if form.errors %}
+		<div class="alert-danger">
+			<strong>Ошибка!</strong> Исправьте ошибки и повторите попытку.
+		</div>
+	{% endif %}
+
+	<!--{% if messages %}
+		<div class="message">
+			<ul class="messagelist">
+				{% for message in messages %}
+					<li>{{ message }}</li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}-->
+	
+	{% FrontAdmin "/admin/order/orderitem/" %}
+	
+	<form id="order" action="" name="orderform" method="post">{% csrf_token %}
+
+		<div class="control-group clearfix">
+			<label>{% if form.org.field.required %}<span style="color:red;">&nbsp;*</span>{% endif %} {{ form.org.label }}</label>
+			{% if form.org.errors %}{{ form.org.errors }}{% endif %}
+			<div class="form-group clearfix">
+				{{ form.org }}
+			</div>
+		</div>
+		<div class="control-group clearfix">
+			<label>{% if form.name.field.required %}<span style="color:red;">&nbsp;*</span>{% endif %} {{ form.name.label }}</label>
+			{% if form.name.errors %}{{ form.name.errors }}{% endif %}
+			<div class="form-group clearfix">
+				{{ form.name }}
+			</div>
+		</div>
+		<div class="control-group clearfix">
+			<label>{% if form.phone.field.required %}<span style="color:red;">&nbsp;*</span>{% endif %} {{ form.phone.label }}</label>
+			{% if form.phone.errors %}{{ form.phone.errors }}{% endif %}
+			<div class="form-group">
+				{{ form.phone }}
+			</div>
+		</div>
+		<div class="control-group clearfix">
+			<label>{% if form.email.field.required %}<span style="color:red;">&nbsp;*</span>{% endif %} {{ form.email.label }}</label>
+			{% if form.email.errors %}{{ form.email.errors }}{% endif %}
+			<div class="form-group">
+				{{ form.email }}
+			</div>
+		</div>
+		<div class="control-group clearfix">
+			<label>{% if form.msg.field.required %}<span style="color:red;">&nbsp;*</span>{% endif %} {{ form.msg.label }}</label>
+			{% if form.msg.errors %}{{ form.msg.errors }}{% endif %}
+			<div class="form-group">
+				{{ form.msg }}
+			</div>
+		</div>
+		<div class="control-group clearfix">
+			<label>{% if form.captcha.field.required %}<span style="color:red;">&nbsp;*</span>{% endif %} {{ form.captcha.label }}</label>
+			{% if form.captcha.errors %}{{ form.captcha.errors }}{% endif %}
+			<div class="form-group captcha clr">
+				{{ form.captcha }}
+			</div>
+		</div>
+
+		<div class="req"><span style="color:red;">&nbsp;*</span> Поля, обязательные для заполнения.</div>
+
+		<div class="order_button">
+			<input type="submit" value="Отправить заказ">
+		</div>
+
+		
+	</form>
+{% endblock %}

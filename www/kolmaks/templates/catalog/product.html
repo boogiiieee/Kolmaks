@@ -1,0 +1,24 @@
+{% extends "default.html" %}
+
+{% load thumbnail %}
+{% load front_admin_tags %}
+
+{% block title %}{{ product.get_title }}{% endblock %}
+{% block description %}{{ product.get_description }}{% endblock %}
+{% block keywords %}{{ product.get_keywords }}{% endblock %}
+
+{% block h1 %}
+	{{ product.get_title }}
+{% endblock %}
+
+{% block breadcrumbs %}
+	<li><a href="{% url 'catalog_url' %}">Каталог</a> <span class="divider">/</span></li>
+	<li class="active">{{ product.get_title }}</li>
+{% endblock %}
+
+{% block content %}
+	{% FrontAdmin product.get_admin_url %}
+	<div class="row-fluid">
+		<div>{{ product.get_text|safe }}</div>
+	</div>
+{% endblock %}

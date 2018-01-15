@@ -1,0 +1,113 @@
+{% extends "default.html" %}
+{% load thumbnail partners_tags pymorphy_tags %}
+{% load front_admin_tags banners_tags news_tags  %}
+
+{% block extra_media %}
+	<link rel="stylesheet" href="{{ STATIC_URL }}js/flexslider/flexslider.css" type="text/css" media="screen" />
+	<script defer src="{{ STATIC_URL }}js/flexslider/jquery.flexslider.js"></script>
+{% endblock %}
+
+{% block breadcrumbs_all %}
+{% endblock %}
+
+{% block top %}
+	<div class="row-fluid">
+		{% get_banners_list %}
+		{% if banners_list %}
+			<div class="span7">
+				<div class="flexslider">
+					<ul class="slides">
+						{% for banner in banners_list %}
+							<li>
+								{% thumbnail banner.get_image "700x280" crop="center" format="PNG" as im %}
+									<img src="{{ im.url }}" title="{{ banner.get_title }}" />
+								{% endthumbnail %}
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+			<div class="span5">
+				{% get_news_list %}
+				{% if news_list %}
+					{% for item in news_list %}
+						<div class="news_item margin_b">
+							<div class="date"><div>{{ item.get_created_at|date:"d" }}</div><div>{{ item.get_created_at|date:"F"|inflect:"рд" }}</div></div>
+							<div class="media-body block">
+								<h5><a href="{{ item.get_absolute_url }}" title="{{ item.get_title }}">{{ item.get_title }}</a></h5>
+								<div>{{ item.get_text|safe|striptags|truncatewords:"30" }}</div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					{% endfor %}
+				{% endif %}
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}
+{% block push %}{% endblock %}
+{% block bottom %}
+{% get_partners_list %}
+	{% if partners_list %}
+		<div class="container">{% FrontAdmin "/admin/partners/partner/" %}</div>
+		<div  id="partners">
+			<div class="row-fluid polosa">
+				<div class="container">
+					<h2>Наши партнеры</h2>
+				</div>
+			</div>
+			<div class="container partners">
+				<div class="row-fluid">
+					<div class="flexslider2">
+						<ul class="slides">
+							{% for item in partners_list %}
+								<li class="span3 partner_item">
+									<div class="title">{{ item.get_title }}</div>
+									<div class="arrow"></div>
+									<div class="block_item t_center">
+										<a href="{% if item.get_url %} {{ item.get_url }} {% else %}#{% endif %}" title="Перейти на страницу партнера" target="_blank">
+											{% thumbnail item.get_image "260x100" crop="center" format="PNG" as im %}
+												<img src="{{ im.url }}" alt="{{ item.get_title }}" />
+											{% endthumbnail %}
+										</a>
+									</div>
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	{% endif %}
+	
+	<div class="row-fluid margin_b">
+		<div class="container">
+			<div id="push"></div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(window).load(function(){
+		  $('.flexslider').flexslider({
+			animation: "slide",
+			animationLoop: true,
+			start: function(slider){
+			  $('body').removeClass('loading');
+			}
+		  });
+		  $('.flexslider2').flexslider({
+			animation: "slide",
+			animationLoop: true,
+			controlNav: false,
+			directionNav: true,
+			itemWidth: 210,
+			itemMargin: 0,
+			minItems: 2,
+			maxItems: 4,
+			start: function(slider){
+			  $('body').removeClass('loading');
+			}
+		  });
+		});
+	</script>
+{% endblock %}

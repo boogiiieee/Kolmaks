@@ -1,0 +1,23 @@
+{% load widget_tweaks %}
+{% if form.errors %}
+	<div class="alert alert-error">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<strong>Ошибка!</strong> {% if form.non_field_errors %}{{ form.non_field_errors }}{% else %}Исправьте ошибки и повторите попытку.{% endif %}
+	</div>
+{% endif %}
+<div class=="row-fluid">
+	{% for field in form %}
+		{% if forloop.counter0|divisibleby:"3" %}<div class="span6">{% endif %}
+		<div class="row-fluid margin_b_min {% if field.errors %}error-block{% endif %}">
+			<div class="form-group">
+				<label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="f_error">&nbsp;*</span>{% endif %}</label>
+				{{ field|add_class:'span12' }}
+				<div class="clearfix"></div>
+				{% if field.help_text %}<div class="t_right"><small>{{ field.help_text }}</small></div>{% endif %}
+				{% if field.errors %}<div class="t_right"><small>{{ field.errors }}</small></div>{% endif %}
+			</div>
+		</div>
+		{% if forloop.counter|divisibleby:"3" or forloop.last %}</div>{% endif %}
+	{% endfor %}
+	<input class="btn pull-right" type="submit" value="Отправить">
+</div>

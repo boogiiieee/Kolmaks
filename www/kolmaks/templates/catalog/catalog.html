@@ -1,0 +1,28 @@
+{% extends "default.html" %}
+
+{% load thumbnail %}
+{% load front_admin_tags %}
+
+{% block content %}
+	{% FrontAdmin "/admin/catalog/product/" %}
+	{% if product_list %}
+		<h4>Каталог продукции</h4>
+		<div class="margin_b">
+			<ul class="catalog">
+				{% for item in product_list %}
+					<li>
+						<span class="sep"></span>
+						<a href="{{ item.get_absolute_url }}">
+							{{ item.get_title }}
+						</a>
+						<div class="clr"></div>
+						<div class="text">{{ item.get_text|safe|striptags|truncatewords:"30" }}</div>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+		
+		{% include "paginate.html" %}
+		
+	{% endif %}
+{% endblock %}

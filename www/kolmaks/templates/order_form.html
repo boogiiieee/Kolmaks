@@ -1,0 +1,12 @@
+{% extends "default.html" %}
+
+{% load front_admin_tags %}
+
+{% block content %}
+	
+	{% FrontAdmin "/admin/order/orderitem/" %}
+	
+	<form class="form form-inline" action="" name="orderform" method="post">{% csrf_token %}
+		{% include 'form.html' %}		
+	</form>
+{% endblock %}

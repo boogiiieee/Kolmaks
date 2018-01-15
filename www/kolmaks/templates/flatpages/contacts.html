@@ -1,0 +1,54 @@
+{% extends "default.html" %}
+
+{% load widget_tweaks %}
+{% load front_admin_tags %}
+{% load map2gis_tags %}
+
+{% block extra_media %}
+	{% if request.config.is_active_map_1 or request.config.is_active_map_2 %}
+		{% media_map2gis %}
+	{% endif %}
+{% endblock %}
+
+
+{% block content_all %}
+	<div class="row-fluid">
+		{% include "messages.html" %}
+		{% if request.flatpage %}
+			<div class="row-fluid margin_b">
+				{% FrontAdmin request.flatpage.get_admin_url %}
+				{% if request.flatpage.content %}
+					{{ request.flatpage.content|safe }}
+				{% endif %}
+			</div>
+		{% endif %}
+	</div>
+	
+	{% FrontAdmin "/admin/configuration/configmodel/1/" %}
+	{% if request.config.is_active_map_1 or request.config.is_active_map_2 %}<div class="row-fluid">{% endif %}
+		{% if request.config.is_active_map_1 %}
+			{% if request.config.is_active_map_2 %}<div class="span6">{% endif %}
+			<div id="map1" class="map row-fluid margin_b">	
+				<h4>ОФИС КОМПАНИИ:</h4>
+				{% get_map2gis request.config.address1 "100%" "300px" %}
+			</div>
+			{% if request.config.is_active_map_2 %}</div>{% endif %}
+		{% endif %}
+		{% if request.config.is_active_map_2 %}
+			{% if request.config.is_active_map_1 %}<div class="span6">{% endif %}
+			<div id="map2" class="map row-fluid margin_b">		
+				<h4>СКЛАД КОМПАНИИ:</h4>
+				{% get_map2gis request.config.address2 "100%" "300px" %}
+			</div>
+			{% if request.config.is_active_map_1 %}</div>{% endif %}
+		{% endif %}
+	{% if request.config.is_active_map_1 or request.config.is_active_map_2 %}</div>{% endif %}
+	
+	{% FrontAdmin "/admin/feedback/feedbackitem/" %}
+	<div class="row-fluid margin_b">
+		<h4>НАПИШИТЕ НАМ:</h4>
+		<form class="form form-inline" action="" method="post">{% csrf_token %}
+			{% include 'form.html' %}
+		</form>
+	</div>
+{% endblock %}
